@@ -52,9 +52,34 @@ Para rodar o código localmente, siga os seguintes passos:
    cd data-science-portfolio/Análise Exploratória de Dados (EDA)/churn_analysis/notebooks
 
 2. **Instale as Dependências**
-  Certifique-se de ter o [Python 3.x]() e os seguintes pacotes instalados:
+
+**Usando pip:**
+
+Certifique-se de ter o [Python 3.x]() instalado no seu sistema.
+
+- É recomendável criar um ambiente virtual para gerenciar as dependências. Você pode criar e ativar um ambiente virtual com:
+  ```bash
+  python -m venv venv
+  source venv/bin/activate  # No Windows use: venv\Scripts\activate
+  ```
+
+- Instale as dependências necessárias com:
+  ```bash
+  pip install pandas numpy matplotlib seaborn scikit-learn
+  ```
+**Usando um arquivo `requirements.txt`**:
+- Você também pode instalar todas as dependências listadas em um arquivo requirements.txt se ele estiver disponível no repositório. Para isso, crie um arquivo requirements.txt com o seguinte conteúdo:
+  ```bash
+pandas
+numpy
+matplotlib
+seaborn
+scikit-learn
+
+- E instale as dependências com:
+
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn
+pip install -r requirements.txt
 ```
 3. **Execute o Notebook**
 
