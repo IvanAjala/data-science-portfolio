@@ -136,7 +136,7 @@ Consulte o arquivo [**CONTRIBUTING.md**](CONTRIBUTING.md) para mais detalhes sob
 
 ### Licença
 
-Este projeto está licenciado sob a [**Licença MIT**]. Veja o arquivo `LICENSE` para mais detalhes.
+Este projeto está licenciado sob a [**Licença MIT**](). Veja o arquivo `LICENSE` para mais detalhes.
 
 ### Contato
 
