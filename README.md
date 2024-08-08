@@ -72,21 +72,77 @@ Certifique-se de ter o Python 3.x instalado. Você também precisará das biblio
 
 Aqui estão alguns exemplos de como utilizar os projetos:
 
-## Exemplo 1: Análise de Vendas
+#### Exemplo 1: Análise de Vendas
+
+   ```bash
+   import pandas as pd
+   import matplotlib.pyplot as plt
+
+   # Carregar dados
+   data = pd.read_csv('projeto-analise-vendas/vendas.csv')
+
+   # Análise exploratória
+   data.describe()
+
+   # Visualização
+   plt.figure(figsize=(10, 6))
+   plt.hist(data['valor_venda'])
+   plt.title('Distribuição dos Valores de Venda')
+   plt.xlabel('Valor da Venda')
+   plt.ylabel('Frequência')
+   plt.show()
+   ```
+#### Exemplo 2: Predição de Churn de Clientes
 ```python
-import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import classification_report
 
 # Carregar dados
-data = pd.read_csv('projeto-analise-vendas/vendas.csv')
+data = pd.read_csv('projeto-predicao-churn/clientes_churn.csv')
 
-# Análise exploratória
-data.describe()
+# Preparar dados
+X = data.drop('churn', axis=1)
+y = data['churn']
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
 
-# Visualização
-plt.figure(figsize=(10, 6))
-plt.hist(data['valor_venda'])
-plt.title('Distribuição dos Valores de Venda')
-plt.xlabel('Valor da Venda')
-plt.ylabel('Frequência')
-plt.show()
+# Treinar modelo
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# Avaliar modelo
+predictions = model.predict(X_test)
+print(classification_report(y_test, predictions))
+```
+### Contribuição
+
+Contribuições são bem-vindas! Se você deseja contribuir para este portfólio, siga estas etapas:
+
+1. Faça um fork do repositório.
+2. Crie uma branch para sua feature:
+```bash
+git checkout -b minha-nova-feature
+```
+3. Faça commit das suas alterações:
+```bash
+git commit -am 'Adiciona nova feature'
+```
+4. Envie para o repositório remoto:
+```bash
+git push origin minha-nova-feature
+```
+5. Abra um pull request.
+
+Consulte o arquivo CONTRIBUTING.md para mais detalhes sobre como contribuir.
+
+### Licença
+
+Este projeto está licenciado sob a **Licença MIT**. Veja o arquivo `LICENSE` para mais detalhes.
+
+### Contato
+
+Se você tiver perguntas ou quiser discutir qualquer aspecto dos projetos, entre em contato:
+
+- **Email:** ivan_ajala@hotmail.com
+- **LinkedIn:** linkedin.com/in/seu-perfil
+- **Twitter:** @seu_usuario
