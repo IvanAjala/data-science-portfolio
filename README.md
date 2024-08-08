@@ -132,11 +132,11 @@ git push origin minha-nova-feature
 ```
 5. Abra um pull request.
 
-Consulte o arquivo CONTRIBUTING.md para mais detalhes sobre como contribuir.
+Consulte o arquivo [**CONTRIBUTING.md**](CONTRIBUTING.md) para mais detalhes sobre como contribuir.
 
 ### Licença
 
-Este projeto está licenciado sob a **Licença MIT**. Veja o arquivo `LICENSE` para mais detalhes.
+Este projeto está licenciado sob a [**Licença MIT**]. Veja o arquivo `LICENSE` para mais detalhes.
 
 ### Contato
 
