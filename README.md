@@ -1,4 +1,3 @@
-# data-science-portfolio
 # Portfólio de Projetos de Dados
 
 Bem-vindo ao meu portfólio de ciência de dados! Este repositório contém uma coleção de projetos que demonstram minhas habilidades e experiências em análise de dados, modelagem preditiva e visualização. Aqui, você encontrará uma variedade de análises e soluções de problemas usando dados reais.
