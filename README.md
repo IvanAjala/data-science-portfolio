@@ -61,3 +61,32 @@ Certifique-se de ter o Python 3.x instalado. Você também precisará das biblio
 2. Navegue até o diretório do projeto:
    ```bash
    cd data-science-portfolio
+
+3. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+
+4. Explore os notebooks e scripts em cada diretório de projeto.
+
+### Exemplos de Análise
+
+Aqui estão alguns exemplos de como utilizar os projetos:
+
+## Exemplo 1: Análise de Vendas
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Carregar dados
+data = pd.read_csv('projeto-analise-vendas/vendas.csv')
+
+# Análise exploratória
+data.describe()
+
+# Visualização
+plt.figure(figsize=(10, 6))
+plt.hist(data['valor_venda'])
+plt.title('Distribuição dos Valores de Venda')
+plt.xlabel('Valor da Venda')
+plt.ylabel('Frequência')
+plt.show()
