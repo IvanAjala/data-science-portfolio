@@ -4,7 +4,7 @@
 
 Este projeto realiza uma análise exploratória de dados (EDA) para investigar padrões de churn em um conjunto de dados de clientes. O objetivo é identificar fatores que podem influenciar a decisão dos clientes de deixar o serviço.
 
-O notebook está disponível em [Google Colab]().
+O notebook está disponível em [Google Colab](https://github.com/IvanAjala/data-science-portfolio/tree/main/An%C3%A1lise%20Explorat%C3%B3ria%20de%20Dados%20(EDA)/churn_analysis/notebooks).
 
 ## Objetivo
 
