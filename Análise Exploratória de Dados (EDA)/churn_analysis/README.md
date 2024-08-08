@@ -71,7 +71,7 @@ Abra o notebook no [Jupyter]() ou no [Google Colab]() e execute as células.
 
 ## Licença
 
-Este projeto é licenciado sob a `Licença MIT` - veja o arquivo [LICENSE]() para mais detalhes.
+Este projeto é licenciado sob a **Licença MIT** - veja o arquivo [LICENSE](https://github.com/IvanAjala/data-science-portfolio/blob/main/LICENSE) para mais detalhes.
 
 ## Referências
 
