@@ -65,17 +65,22 @@ Certifique-se de ter o [Python 3.x]() instalado no seu sistema.
 
 - Instale as dependências necessárias com:
   ```bash
-  pip install pandas numpy matplotlib seaborn scikit-learn
+  pip install pandas 
+  pip install numpy
+  pip install matplotlib
+  pip install seaborn
+  pip install scikit-learn
+
   ```
 **Usando um arquivo `requirements.txt`**:
 - Você também pode instalar todas as dependências listadas em um arquivo requirements.txt se ele estiver disponível no repositório. Para isso, crie um arquivo requirements.txt com o seguinte conteúdo:
-  ```bash
-pandas
-numpy
-matplotlib
-seaborn
-scikit-learn
-
+    ```bash
+  pandas
+  numpy
+  matplotlib
+  seaborn
+  scikit-learn
+  ```
 - E instale as dependências com:
 
 ```bash
@@ -84,15 +89,6 @@ pip install -r requirements.txt
 3. **Execute o Notebook**
 
 Abra o notebook no [Jupyter]() ou no [Google Colab]() e execute as células.
-
-## Dependências
-
-  - **Python 3.x**
-  - **pandas:** `pip install pandas`
-  - **numpy:** `pip install numpy`
-  - **matplotlib:** `pip install matplotlib`  
-  - **seaborn:** `pip install seaborn`
-  - **scikit-learn:** `pip install scikit-learn`
 
 ## Licença
 
