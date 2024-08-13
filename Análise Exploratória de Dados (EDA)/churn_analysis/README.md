@@ -1,22 +1,24 @@
 # Análise Exploratória de Dados (EDA) - Análise de Churn
 
 ## Descrição do Projeto
+Churn, ou rotatividade de clientes, refere-se à perda de clientes em uma empresa. A análise de churn é usada para entender os fatores que contribuem para a saída de clientes e para desenvolver estratégias para retê-los.
 
-Este projeto realiza uma análise exploratória de dados (EDA) para investigar padrões de churn em um conjunto de dados de clientes. O objetivo é identificar fatores que podem influenciar a decisão dos clientes de deixar o serviço.
+Este projeto realiza uma análise exploratória de dados (EDA) para investigar e entender em um conjunto de dados, os padrões e fatores que influenciam a rotatividade dos clientes.
 
-O notebook está disponível em [Google Colab](https://github.com/IvanAjala/data-science-portfolio/tree/main/An%C3%A1lise%20Explorat%C3%B3ria%20de%20Dados%20(EDA)/churn_analysis/notebooks).
+O notebook **churn_analysis.ipynb** está disponível em [Google Colab](https://github.com/IvanAjala/data-science-portfolio/tree/main/An%C3%A1lise%20Explorat%C3%B3ria%20de%20Dados%20(EDA)/churn_analysis/notebooks).
 
 ## Objetivo
 
-O objetivo desta análise é entender os padrões de churn entre os clientes, explorando as seguintes questões:
+O notebook tem como objetivo explorar um conjunto de dados relacionado ao churn para identificar padrões e fatores que influenciam a saída de clientes e responder questões do tipo:
+
 - Quais características estão associadas ao churn?
 - Existem padrões visíveis nas variáveis como Salário, Idade e outros atributos?
 
 ## Conteúdo do Notebook
 
-O notebook realiza as seguintes etapas de análise:
+O notebook **churn_analysis.ipynb** realiza as seguintes etapas de análise:
 
-1. **Importação de Dados**
+1. **Importação de Bibliotecas e Carregamento de Dados**
    - Carregamento e visualização inicial dos dados.
 
 2. **Limpeza e Preparação dos Dados**
