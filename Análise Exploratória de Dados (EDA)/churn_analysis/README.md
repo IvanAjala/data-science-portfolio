@@ -16,7 +16,7 @@ O notebook tem como objetivo explorar um conjunto de dados relacionado ao churn 
 
 ## Conteúdo do Notebook
 
-O notebook **churn_analysis.ipynb** realiza as seguintes etapas de análise:
+Este notebook conduz uma análise exploratória de dados (EDA) com foco em churn, abordando desde a limpeza e inspeção inicial dos dados até a análise detalhada e visualizações que ajudam a entender os padrões de churn. Seguir este fluxo ajuda a obter uma visão clara dos dados e a desenvolver estratégias para melhorar a retenção de clientes.
 
 1. **Importação de Bibliotecas e Carregamento de Dados**
    - Carregamento e visualização inicial dos dados.
