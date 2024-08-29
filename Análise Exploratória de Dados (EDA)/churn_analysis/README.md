@@ -9,10 +9,7 @@ O notebook **churn_analysis.ipynb** está disponível em [Google Colab](https://
 
 ## Objetivo
 
-O notebook tem como objetivo explorar um conjunto de dados relacionado ao churn para identificar padrões e fatores que influenciam a saída de clientes e responder questões do tipo:
-
-- Quais características estão associadas ao churn?
-- Existem padrões visíveis nas variáveis como Salário, Idade e outros atributos?
+O objetivo é fornecer uma visão geral prática de como realizar tarefas de análise de dados, desde a importação e exploração dos dados até a visualização de modo que obtenha os insights iniciais.
 
 ## Conteúdo do Notebook
 
