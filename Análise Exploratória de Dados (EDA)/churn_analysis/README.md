@@ -9,7 +9,7 @@ O notebook **churn_analysis.ipynb** está disponível em [Google Colab](https://
 
 ## Objetivo
 
-O objetivo é fornecer uma visão geral prática de como realizar tarefas de análise de dados, desde a importação e exploração dos dados até a visualização gráfica, de modo que obtenha os insights iniciais com base no dataframe carregado no Python
+O objetivo é fornecer uma visão geral prática de como realizar tarefas de análise de dados, desde a importação e exploração dos dados até a visualização gráfica, de modo que obtenha os insights iniciais com base no dataframe.
 
 ## Conteúdo do Notebook
 
