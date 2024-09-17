@@ -36,7 +36,10 @@ df_total = df.groupby('date').agg({
     'Casos por 100 mil habitantes': 'mean',
     'Recuperados': 'sum',
     'Suspeitos': 'sum',
-    'Testados': 'sum'
+    'Testados': 'sum',
+    'Primeira dose por 100 mil habitantes': 'mean',
+    'Segunda dose por 100 mil habitantes': 'mean',
+    'Terceira dose por 100 mil habitantes': 'mean'
 }).reset_index()
 df_total['state'] = 'TOTAL'
 
@@ -169,34 +172,27 @@ elif page == "Vacinação":
         selected_states.remove('TOTAL')
 
     # Novo filtro
-    filtro = st.sidebar.selectbox(
+    filtro = st.sidebar.multiselect(
         'Selecione o tipo de dado:',
         ['Primeira dose por 100 mil habitantes', 'Segunda dose por 100 mil habitantes', 'Terceira dose por 100 mil habitantes']
     )
 
     # Filtrando os dados para os estados selecionados e o filtro
-    coluna_filtro = filtro
-    if coluna_filtro in df.columns:
-        df_filtered = df_combined[df_combined['state'].isin(selected_states)]
+    df_filtered = df_combined[df_combined['state'].isin(selected_states)]
 
-        # Verificar se é necessário agregar dados para o estado "TOTAL"
-        if 'TOTAL' in selected_states:
-            # Se 'TOTAL' estiver incluído, agregue os dados e renomeie 'state' para 'TOTAL'
-            df_filtered = df_filtered[['date', 'state', coluna_filtro]].groupby(['date']).sum().reset_index()
-            df_filtered['state'] = 'TOTAL'
-
-        # Criando o gráfico
-        fig = px.line(df_filtered, x="date", y=coluna_filtro, color='state', title=f'{filtro} por Estado')
+    if len(filtro) > 0:
+        # Criando o gráfico para múltiplas colunas de filtro selecionadas
+        fig = px.line(df_filtered, x="date", y=filtro, color='state', title=f'{", ".join(filtro)} por Estado')
         fig.update_layout(
             xaxis_title='Data',
-            yaxis_title=coluna_filtro,
+            yaxis_title='Valores',
             title={'x':0.5}
         )
 
         # Exibindo o gráfico
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.error(f"A coluna '{coluna_filtro}' não existe no DataFrame.")
+        st.error("Por favor, selecione pelo menos um tipo de dado para visualizar.")
 
 elif page == "Outros Dados":
     st.title('Outros Dados')
