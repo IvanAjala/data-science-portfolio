@@ -24,7 +24,7 @@ df = df.rename(columns={
     'suspects': 'Suspeitos',
     'tests': 'Testados'
     'vaccinated_single_per_100_inhabitants': '1. Dose por 100 mil habitantes',
-    'vaccinated_second_per_100_inhabitants': '2. Dose por 100 mil habitantes,
+    'vaccinated_second_per_100_inhabitants': '2. Dose por 100 mil habitantes',
     'vaccinated_third_per_100_inhabitants': '3. Dose por 100 mil habitantes'
 })
 
