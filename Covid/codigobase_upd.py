@@ -49,28 +49,22 @@ if page == "Página Inicial":
     # Selecionando os estados disponíveis
     estados = list(df_combined['state'].unique())
     
-    # Se "TOTAL" estiver selecionado como padrão, deve estar disponível inicialmente
+    # Garantir que "TOTAL" esteja na lista de opções
     estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
-    default_states = ['TOTAL']
     
-    # Se mais de um estado for selecionado, remova "TOTAL" da lista
-    if st.sidebar.multiselect(
-        'Selecione os estados:',
-        options=estados_sem_total,
-        default=[]
-    ):
-        estados_sem_total.append('TOTAL')  # Adiciona "TOTAL" de volta à lista de opções
-    
+    # Permitir seleção de múltiplos estados
     selected_states = st.sidebar.multiselect(
         'Selecione os estados:',
         options=estados_sem_total,
-        default=default_states  # Define "TOTAL" como selecionado por padrão
+        default=[]
     )
 
-    # Verificar se "TOTAL" está entre os selecionados e removê-lo se outros estados forem selecionados
-    if len(selected_states) > 1 and 'TOTAL' in selected_states:
+    # Se "TOTAL" estiver na seleção, adiciona-o à lista de seleção
+    if len(selected_states) == 0:
+        selected_states = ['TOTAL']
+    elif 'TOTAL' in selected_states and len(selected_states) > 1:
         selected_states.remove('TOTAL')
-
+    
     # Selecionando colunas de interesse
     colunas = ['Novos óbitos', 'Novos casos', 'Óbitos por 100 mil habitantes', 'Casos por 100 mil habitantes']
     column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
@@ -103,26 +97,20 @@ elif page == "Resumo Total":
     # Filtros adicionais
     estados = list(df_combined['state'].unique())
     
-    # Se "TOTAL" estiver selecionado como padrão, deve estar disponível inicialmente
+    # Garantir que "TOTAL" esteja na lista de opções
     estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
-    default_states = ['TOTAL']
     
-    # Se mais de um estado for selecionado, remova "TOTAL" da lista
-    if st.sidebar.multiselect(
-        'Selecione os estados:',
-        options=estados_sem_total,
-        default=[]
-    ):
-        estados_sem_total.append('TOTAL')  # Adiciona "TOTAL" de volta à lista de opções
-    
+    # Permitir seleção de múltiplos estados
     selected_states = st.sidebar.multiselect(
         'Selecione os estados:',
         options=estados_sem_total,
-        default=default_states  # Define "TOTAL" como selecionado por padrão
+        default=[]
     )
 
-    # Verificar se "TOTAL" está entre os selecionados e removê-lo se outros estados forem selecionados
-    if len(selected_states) > 1 and 'TOTAL' in selected_states:
+    # Se "TOTAL" estiver na seleção, adiciona-o à lista de seleção
+    if len(selected_states) == 0:
+        selected_states = ['TOTAL']
+    elif 'TOTAL' in selected_states and len(selected_states) > 1:
         selected_states.remove('TOTAL')
 
     # Novo filtro
