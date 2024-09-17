@@ -44,7 +44,7 @@ df_total['state'] = 'TOTAL'
 df_combined = pd.concat([df, df_total], ignore_index=True)
 
 # Navegação entre guias
-page = st.sidebar.selectbox("Escolha uma página", ["Página Inicial", "Resumo Total", "Outros Dados"])
+page = st.sidebar.selectbox("Escolha uma página", ["Página Inicial", "Resumo Total", "Vacinação", "Outros Dados"])
 
 if page == "Página Inicial":
     st.title('DADOS COVID - BRASIL')
@@ -171,7 +171,7 @@ elif page == "Vacinação":
     # Novo filtro
     filtro = st.sidebar.selectbox(
         'Selecione o tipo de dado:',
-        ['1. Dose por 100 mil habitante', '2. Dose por 100 mil habitante', '3. Dose por 100 mil habitante']
+        ['Primeira dose por 100 mil habitantes', 'Segunda dose por 100 mil habitantes', 'Terceira dose por 100 mil habitantes']
     )
 
     # Filtrando os dados para os estados selecionados e o filtro
