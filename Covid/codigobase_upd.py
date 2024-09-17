@@ -7,11 +7,14 @@ Original file is located at
     https://colab.research.google.com/drive/1bLgLWjGzwZsk0dERCmEOc5T71xG61rHC
 """
 
-# importando bibliotecas
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
+# instalando o streamlit
+# pip install streamlit (This line is commented out as it's not needed in the code block)
+
+# importando bibliotecas
 # carrregando o dataset
 df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 
@@ -29,10 +32,10 @@ colunas = ['Novos óbitos','Novos casos','Óbitos por 100 mil habitantes','Casos
 column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
 
 # selecionando as linhas que pertencem ao estado
-df = df[df['state'] == state]
+df_filtered = df[df['state'] == state]
 
 # plotando o grafico
-fig = px.line(df, x="date", y=column, title=column + ' - ' + state)
+fig = px.line(df_filtered, x="date", y=column, title=column + ' - ' + state)
 fig.update_layout( xaxis_title='Data', yaxis_title=column.upper(), title = {'x':0.5})
 
 st.title('DADOS COVID - BRASIL')
