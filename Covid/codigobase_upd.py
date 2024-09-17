@@ -19,9 +19,9 @@ df = df.rename(columns={
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
     'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
-    'recovered': 'Recuperados',
-    'suspects': 'Suspeitos',
-    'tests': 'Testados'
+    'totalRecovered': 'Recuperados',
+    'totalSuspects': 'Suspeitos',
+    'totalTests': 'Testados'
 })
 
 # Adicionando uma linha com o total geral
@@ -60,8 +60,15 @@ if page == "Página Inicial":
     # Filtrando os dados para os estados selecionados
     df_filtered = df_combined[df_combined['state'].isin(selected_states)]
 
-    # Criando o gráfico
-    fig = px.line(df_filtered, x="date", y=column, color='state', title=f'{column} por Estado')
+    # Verificar se apenas "TOTAL" está selecionado
+    if len(selected_states) == 1 and 'TOTAL' in selected_states:
+        # Agregar dados se apenas "TOTAL" estiver selecionado
+        df_filtered = df_filtered[['date', column]].groupby('date').sum().reset_index()
+        fig = px.line(df_filtered, x="date", y=column, title=f'{column} - TOTAL')
+    else:
+        # Criar gráfico para múltiplos estados
+        fig = px.line(df_filtered, x="date", y=column, color='state', title=f'{column} por Estado')
+
     fig.update_layout(
         xaxis_title='Data', 
         yaxis_title=column.upper(), 
@@ -118,4 +125,5 @@ elif page == "Outros Dados":
     
     # Adicione aqui qualquer outra visualização ou dados que você deseja exibir em uma guia separada.
     st.write("Aqui você pode exibir outros tipos de dados ou visualizações.")
+
 
