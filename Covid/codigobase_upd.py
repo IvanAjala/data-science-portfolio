@@ -149,51 +149,6 @@ elif page == "Resumo Total":
     else:
         st.error(f"A coluna '{coluna_filtro}' não existe no DataFrame.")
 
-elif page == "Vacinação":
-    st.title('DADOS COVID - VACINAÇÃO')
-    
-    # Filtros adicionais
-    estados = list(df_combined['state'].unique())
-    
-    # Garantir que "TOTAL" esteja na lista de opções
-    estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
-    
-    # Permitir seleção de múltiplos estados
-    selected_states = st.sidebar.multiselect(
-        'Selecione os estados:',
-        options=estados_sem_total,
-        default=[]
-    )
-
-    # Se "TOTAL" estiver na seleção, adiciona-o à lista de seleção
-    if len(selected_states) == 0:
-        selected_states = ['TOTAL']
-    elif 'TOTAL' in selected_states and len(selected_states) > 1:
-        selected_states.remove('TOTAL')
-
-    # Novo filtro
-    filtro = st.sidebar.multiselect(
-        'Selecione o tipo de dado:',
-        ['Primeira dose por 100 mil habitantes', 'Segunda dose por 100 mil habitantes', 'Terceira dose por 100 mil habitantes']
-    )
-
-    # Filtrando os dados para os estados selecionados e o filtro
-    df_filtered = df_combined[df_combined['state'].isin(selected_states)]
-
-    if len(filtro) > 0:
-        # Criando o gráfico para múltiplas colunas de filtro selecionadas
-        fig = px.line(df_filtered, x="date", y=filtro, color='state', title=f'{", ".join(filtro)} por Estado')
-        fig.update_layout(
-            xaxis_title='Data',
-            yaxis_title='Valores',
-            title={'x':0.5}
-        )
-
-        # Exibindo o gráfico
-        st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.error("Por favor, selecione pelo menos um tipo de dado para visualizar.")
-
 elif page == "Outros Dados":
     st.title('Outros Dados')
 
