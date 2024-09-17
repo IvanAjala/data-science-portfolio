@@ -23,9 +23,9 @@ df = df.rename(columns={
     'recovered': 'Recuperados',
     'suspects': 'Suspeitos',
     'tests': 'Testados'
-    'vaccinated_single_per_100_inhabitants': '1. Dose por 100 mil habitantes',
-    'vaccinated_second_per_100_inhabitants': '2. Dose por 100 mil habitantes',
-    'vaccinated_third_per_100_inhabitants': '3. Dose por 100 mil habitantes'
+    'vaccinated_single_per_100_inhabitants': 'primeira dose por 100 mil habitantes',
+    'vaccinated_second_per_100_inhabitants': 'segunda dose por 100 mil habitantes',
+    'vaccinated_third_per_100_inhabitants': 'terceira dose por 100 mil habitantes'
 })
 
 # Adicionando uma linha com o total geral
