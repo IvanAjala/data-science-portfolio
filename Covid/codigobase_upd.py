@@ -196,7 +196,42 @@ elif page == "Vacinação":
 
 elif page == "Outros Dados":
     st.title('Outros Dados')
+
+    # Filtragem para obter o total de mortes por estado ao longo do tempo
+    df_mortes = df_combined[['date', 'state', 'Novos óbitos']]
     
-    # Adicione aqui qualquer outra visualização ou dados que você deseja exibir em uma guia separada.
-    st.write("Aqui você pode exibir outros tipos de dados ou visualizações.")
+    # Filtrando dados para os estados selecionados
+    estados = list(df_combined['state'].unique())
+    estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
+    selected_states = st.sidebar.multiselect(
+        'Selecione os estados:',
+        options=estados_sem_total,
+        default=estados_sem_total  # Selecionar todos por padrão
+    )
+    
+    if 'TOTAL' in selected_states:
+        selected_states.remove('TOTAL')
+
+    if len(selected_states) > 0:
+        df_mortes_filtered = df_mortes[df_mortes['state'].isin(selected_states)]
+    else:
+        df_mortes_filtered = df_mortes[df_mortes['state'] == 'TOTAL']
+    
+    # Criando o gráfico de mapa
+    fig = px.choropleth(
+        df_mortes_filtered,
+        locations='state',
+        locationmode='country names',  # Ajuste se necessário para estados brasileiros
+        color='Novos óbitos',
+        hover_name='state',
+        animation_frame='date',  # Atualiza com base na data
+        color_continuous_scale=px.colors.sequential.Plasma,
+        labels={'Novos óbitos': 'Total de Mortes'},
+        title='Total de Mortes por Estado ao Longo do Tempo'
+    )
+
+    # Exibindo o gráfico no Streamlit
+    st.plotly_chart(fig, use_container_width=True)
+
+
 
