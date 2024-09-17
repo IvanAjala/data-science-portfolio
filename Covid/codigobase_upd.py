@@ -9,38 +9,40 @@ Original file is located at
 
 import pandas as pd
 import plotly.express as px
-import streamlit as st
+import streamlit as st 
 
-# instalando o streamlit
-# pip install streamlit (This line is commented out as it's not needed in the code block)
-
-# importando bibliotecas
-# carrregando o dataset
+# Carregando o dataset
 df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 
-# renomeando colunas de interesse
-df = df.rename(columns={'newDeaths': 'Novos óbitos','newCases': 'Novos casos',
-                        'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
-                        'totalCases_per_100k_inhabitants':'Casos por 100 mil habitantes'})
+# Renomeando colunas de interesse
+df = df.rename(columns={
+    'newDeaths': 'Novos óbitos',
+    'newCases': 'Novos casos',
+    'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
+    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes'
+})
 
-# selecionando os estados
+# Selecionando os estados disponíveis
 estados = list(df['state'].unique())
-state = st.sidebar.selectbox('Qual estado?', estados)
+selected_states = st.sidebar.multiselect('Selecione os estados:', estados)
 
-# selecionando colunas de interesse
-colunas = ['Novos óbitos','Novos casos','Óbitos por 100 mil habitantes','Casos por 100 mil habitantes']
+# Selecionando colunas de interesse
+colunas = ['Novos óbitos', 'Novos casos', 'Óbitos por 100 mil habitantes', 'Casos por 100 mil habitantes']
 column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
 
-# selecionando as linhas que pertencem ao estado
-df_filtered = df[df['state'] == state]
+# Filtrando os dados para os estados selecionados
+df_filtered = df[df['state'].isin(selected_states)]
 
-# plotando o grafico
-fig = px.line(df_filtered, x="date", y=column, title=column + ' - ' + state)
-fig.update_layout( xaxis_title='Data', yaxis_title=column.upper(), title = {'x':0.5})
+# Criando o gráfico
+fig = px.line(df_filtered, x="date", y=column, color='state', title=f'{column} por Estado')
+fig.update_layout(
+    xaxis_title='Data', 
+    yaxis_title=column.upper(), 
+    title={'x':0.5}
+)
 
+# Exibindo o título e o gráfico na aplicação
 st.title('DADOS COVID - BRASIL')
-st.write('Nessa aplicação, o usuário tem a opção de escolher o estado e o tipo de informação para mostrar o gráfico. Utilize o menu lateral para alterar a mostragem.')
-
+st.write('Nessa aplicação, o usuário tem a opção de escolher múltiplos estados e o tipo de informação para mostrar o gráfico. Utilize o menu lateral para alterar a mostragem.')
 st.plotly_chart(fig, use_container_width=True)
-
 st.caption('Os dados foram obtidos a partir do site: https://github.com/wcota/covid19br')
