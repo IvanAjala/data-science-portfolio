@@ -19,7 +19,11 @@ df = df.rename(columns={
     'newDeaths': 'Novos óbitos',
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
-    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes'
+    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
+    # Adicione os nomes das colunas para os dados adicionais
+    'totalRecovered': 'Recuperados',
+    'totalSuspects': 'Suspeitos',
+    'totalTests': 'Testados'
 })
 
 # Adicionando uma linha com o total geral
@@ -27,7 +31,10 @@ df_total = df.groupby('date').agg({
     'Novos óbitos': 'sum',
     'Novos casos': 'sum',
     'Óbitos por 100 mil habitantes': 'mean',
-    'Casos por 100 mil habitantes': 'mean'
+    'Casos por 100 mil habitantes': 'mean',
+    'Recuperados': 'sum',
+    'Suspeitos': 'sum',
+    'Testados': 'sum'
 }).reset_index()
 df_total['state'] = 'TOTAL'
 
@@ -70,9 +77,43 @@ if page == "Página Inicial":
 elif page == "Resumo Total":
     st.title('Resumo Total dos Dados')
     
-    # Mostra gráficos ou tabelas com dados agregados
-    # Aqui você pode adicionar gráficos ou tabelas que mostram dados agregados ou outros resumos.
-    st.write("Aqui você pode exibir gráficos ou tabelas com dados totais.")
+    # Filtros adicionais
+    estados = list(df_combined['state'].unique())
+    selected_states = st.sidebar.multiselect(
+        'Selecione os estados:',
+        options=estados,
+        default=['TOTAL']  # Define "TOTAL" como selecionado por padrão
+    )
+
+    # Novo filtro
+    filtro = st.sidebar.selectbox(
+        'Selecione o tipo de dado:',
+        ['Recuperados', 'Suspeitos', 'Testados']
+    )
+
+    # Filtrando os dados para os estados selecionados e o filtro
+    coluna_filtro = filtro
+    if coluna_filtro in df.columns:
+        df_filtered = df_combined[df_combined['state'].isin(selected_states)]
+
+        # Adicionar tratamento específico se a coluna de filtro for diferente para 'TOTAL'
+        if 'TOTAL' in selected_states:
+            df_filtered = df_filtered[['date', 'state', coluna_filtro]].groupby(['date']).sum().reset_index()
+            df_filtered['state'] = 'TOTAL'
+
+        # Criando o gráfico
+        fig = px.line(df_filtered, x="date", y=coluna_filtro, color='state', title=f'{filtro} por Estado')
+        fig.update_layout(
+            xaxis_title='Data',
+            yaxis_title=coluna_filtro,
+            title={'x':0.5}
+        )
+
+        # Exibindo o gráfico
+        st.plotly_chart(fig, use_container_width=True)
+        st.caption('Os dados foram obtidos a partir do site: https://github.com/wcota/covid19br')
+    else:
+        st.error(f"A coluna '{coluna_filtro}' não existe no DataFrame.")
 
 elif page == "Outros Dados":
     st.title('Outros Dados')
