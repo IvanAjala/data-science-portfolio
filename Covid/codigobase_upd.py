@@ -20,6 +20,7 @@ df = df.rename(columns={
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
     'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes'
+    'state': 'Estado(s)'
 })
 
 # Adicionando uma linha com o total geral
@@ -29,17 +30,17 @@ df_total = df.groupby('date').agg({
     'Óbitos por 100 mil habitantes': 'mean',
     'Casos por 100 mil habitantes': 'mean'
 }).reset_index()
-df_total['state'] = 'TOTAL'
+df_total['Estado(s)'] = 'TOTAL'
 
 # Concatenando o DataFrame total com o DataFrame original
 df_combined = pd.concat([df, df_total], ignore_index=True)
 
 # Selecionando os estados disponíveis, incluindo "TOTAL"
-estados = list(df_combined['state'].unique())
+estados = list(df_combined['Estado(s)'].unique())
 
 # Usando multiselect com todos os estados selecionados por padrão, incluindo "TOTAL"
 selected_states = st.sidebar.multiselect(
-    'Selecione os estados:',
+    'Selecione os estado(s):',
     options=estados,
     default=['TOTAL']  # Define "TOTAL" como selecionado por padrão
 )
@@ -49,12 +50,12 @@ colunas = ['Novos óbitos', 'Novos casos', 'Óbitos por 100 mil habitantes', 'Ca
 column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
 
 # Filtrando os dados para os estados selecionados
-df_filtered = df_combined[df_combined['state'].isin(selected_states)]
+df_filtered = df_combined[df_combined['Estado(s)'].isin(selected_states)]
 
 # Criando o gráfico
-fig = px.line(df_filtered, x="date", y=column, color='state', title=f'{column} por Estado')
+fig = px.line(df_filtered, x="date", y=column, color='Estado(s)', title=f'{column} por Estado')
 fig.update_layout(
-    xaxis_title='Data', 
+    # xaxis_title='Data', 
     yaxis_title=column.upper(), 
     title={'x':0.5}
 )
