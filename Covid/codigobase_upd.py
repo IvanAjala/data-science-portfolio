@@ -20,10 +20,9 @@ df = df.rename(columns={
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
     'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
-    # Adicione os nomes das colunas para os dados adicionais
-    'totalRecovered': 'Recuperados',
-    'totalSuspects': 'Suspeitos',
-    'totalTests': 'Testados'
+    'recovered': 'Recuperados',
+    'suspects': 'Suspeitos',
+    'tests': 'Testados'
 })
 
 # Adicionando uma linha com o total geral
