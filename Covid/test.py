@@ -60,6 +60,9 @@ if page == "Outros Dados":
     # Filtragem para obter o total de mortes por estado ao longo do tempo
     df_mortes = df_combined[['date', 'state_sigla', 'Novos óbitos']]
     
+    # Verificar as colunas do DataFrame
+    st.write(df_mortes.columns)
+    
     # Filtros para seleção de estados
     estados = list(df_combined['state'].unique())
     estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
@@ -72,10 +75,16 @@ if page == "Outros Dados":
     if 'TOTAL' in selected_states:
         selected_states.remove('TOTAL')
 
-    if len(selected_states) > 0:
-        df_mortes_filtered = df_mortes[df_mortes['state_sigla'].isin([estados_siglas[estado] for estado in selected_states])]
+    # Mapeia os estados selecionados para as siglas
+    selected_siglas = [estados_siglas[estado] for estado in selected_states if estado in estados_siglas]
+    
+    if len(selected_siglas) > 0:
+        df_mortes_filtered = df_mortes[df_mortes['state_sigla'].isin(selected_siglas)]
     else:
         df_mortes_filtered = df_mortes[df_mortes['state_sigla'] == estados_siglas['TOTAL']]
+    
+    # Verifique os dados filtrados
+    st.write(df_mortes_filtered.head())
     
     # Criando o gráfico de mapa
     fig = px.choropleth(
