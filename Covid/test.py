@@ -1,103 +1,41 @@
-import pandas as pd
-import plotly.express as px
 import streamlit as st
+import folium
+from io import BytesIO
+import pandas as pd
 
-# Carregando o dataset
-df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
+# Dados com as iniciais dos estados e suas coordenadas (latitude e longitude)
+data = {
+    'Estado': ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MG', 'MS', 'MT', 'PA', 'PB', 'PE', 'PI', 'PR', 'RJ', 'RN', 'RO', 'RR', 'RS', 'SC', 'SE', 'SP', 'TO'],
+    'Latitude': [-8.7742, -9.5714, -1.3833, -3.1000, -12.9714, -3.7172, -15.7801, -20.3155, -15.7801, -2.5489, -19.8157, -20.4413, -12.6416, -1.4558, -7.1150, -8.0476, -5.0892, -25.4284, -22.9068, -5.7945, -11.4396,  -1.9390, -27.5954, -27.5954, -10.2646, -9.4136],
+    'Longitude': [-70.5551, -36.7820, -51.0682, -60.0250, -38.5014, -38.5433, -47.9292, -40.3128, -49.2650, -44.2828, -43.3547, -54.6212, -55.4280, -51.9783, -34.8774, -34.8774, -42.8034, -49.2718, -43.1729, -35.2110, -63.4939, -61.5240, -51.2177, -48.5480, -37.7333, -51.1745]
+}
 
-# Renomeando colunas de interesse
-df = df.rename(columns={
-    'newDeaths': 'Novos óbitos',
-    'newCases': 'Novos casos',
-    'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
-    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
-    'recovered': 'Recuperados',
-    'suspects': 'Suspeitos',
-    'tests': 'Testados',
-    'vaccinated_single_per_100_inhabitants': 'Primeira dose por 100 mil habitantes',
-    'vaccinated_second_per_100_inhabitants': 'Segunda dose por 100 mil habitantes',
-    'vaccinated_third_per_100_inhabitants': 'Terceira dose por 100 mil habitantes'
-})
+# Crie um DataFrame a partir dos dados
+df = pd.DataFrame(data)
 
-# Adicionando uma linha com o total geral
-df_total = df.groupby('date').agg({
-    'Novos óbitos': 'sum',
-    'Novos casos': 'sum',
-    'Óbitos por 100 mil habitantes': 'mean',
-    'Casos por 100 mil habitantes': 'mean',
-    'Recuperados': 'sum',
-    'Suspeitos': 'sum',
-    'Testados': 'sum',
-    'Primeira dose por 100 mil habitantes': 'mean',
-    'Segunda dose por 100 mil habitantes': 'mean',
-    'Terceira dose por 100 mil habitantes': 'mean'
-}).reset_index()
-df_total['state'] = 'TOTAL'
-
-# Concatenando o DataFrame total com o DataFrame original
-df_combined = pd.concat([df, df_total], ignore_index=True)
-
-# Navegação entre guias
-page = st.sidebar.selectbox("Escolha uma página", ["Página Inicial", "Resumo Total", "Vacinação", "Outros Dados"])
-
-if page == "Outros Dados":
-    st.title('Outros Dados')
-
-    # Mapeamento das siglas dos estados brasileiros
-    estados_siglas = {
-        'Acre': 'AC', 'Alagoas': 'AL', 'Amapá': 'AP', 'Amazonas': 'AM',
-        'Bahia': 'BA', 'Ceará': 'CE', 'Distrito Federal': 'DF', 'Espírito Santo': 'ES',
-        'Goiás': 'GO', 'Maranhão': 'MA', 'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS',
-        'Minas Gerais': 'MG', 'Pará': 'PA', 'Paraíba': 'PB', 'Paraná': 'PR',
-        'Pernambuco': 'PE', 'Piauí': 'PI', 'Rio de Janeiro': 'RJ', 'Rio Grande do Norte': 'RN',
-        'Rio Grande do Sul': 'RS', 'Rondônia': 'RO', 'Roraima': 'RR', 'Santa Catarina': 'SC',
-        'São Paulo': 'SP', 'Sergipe': 'SE', 'Tocantins': 'TO', 'TOTAL': 'TOTAL'
-    }
-
-    # Adicionar coluna com siglas dos estados
-    df_combined['state_sigla'] = df_combined['state'].map(estados_siglas)
+# Função para criar o mapa
+def create_map(dataframe):
+    # Crie um mapa base
+    m = folium.Map(location=[-15, -55], zoom_start=4)
     
-    # Filtragem para obter o total de mortes por estado ao longo do tempo
-    df_mortes = df_combined[['date', 'state_sigla', 'Novos óbitos']]
+    # Adicione marcadores para cada estado
+    for index, row in dataframe.iterrows():
+        folium.Marker(
+            location=[row['Latitude'], row['Longitude']],
+            popup=row['Estado'],
+            icon=folium.Icon(color='blue', icon='info-sign')
+        ).add_to(m)
     
-    # Verificar as colunas do DataFrame
-    st.write(df_mortes.columns)
-    
-    # Filtros para seleção de estados
-    estados = list(df_combined['state'].unique())
-    estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
-    selected_states = st.sidebar.multiselect(
-        'Selecione os estados:',
-        options=estados_sem_total,
-        default=estados_sem_total  # Selecionar todos por padrão
-    )
-    
-    if 'TOTAL' in selected_states:
-        selected_states.remove('TOTAL')
+    return m
 
-    # Mapeia os estados selecionados para as siglas
-    selected_siglas = [estados_siglas[estado] for estado in selected_states if estado in estados_siglas]
-    
-    if len(selected_siglas) > 0:
-        df_mortes_filtered = df_mortes[df_mortes['state_sigla'].isin(selected_siglas)]
-    else:
-        df_mortes_filtered = df_mortes[df_mortes['state_sigla'] == estados_siglas['TOTAL']]
-    
-    # Verifique os dados filtrados
-    st.write(df_mortes_filtered.head())
-    
-    # Criando o gráfico de mapa
-    fig = px.choropleth(
-        df_mortes_filtered,
-        locations='state_sigla',
-        locationmode='ISO-3',  # Usando siglas dos estados brasileiros
-        color='Novos óbitos',
-        hover_name='state_sigla',
-        animation_frame='date',  # Atualiza com base na data
-        color_continuous_scale=px.colors.sequential.Plasma,
-        labels={'Novos óbitos': 'Total de Mortes'},
-        title='Total de Mortes por Estado ao Longo do Tempo'
-    )
+# Streamlit para exibir o mapa
+st.title('Mapa dos Estados com Iniciais')
 
-    # Exibindo o gráfico no Streamlit
-    st.plotly_chart(fig, use_container_width=True)
+# Crie o mapa
+m = create_map(df)
+
+# Converta o mapa para um objeto que o Streamlit possa exibir
+map_html = BytesIO()
+m.save(map_html, close_file=False)
+
+st.markdown(f'<iframe srcdoc="{map_html.getvalue().decode()}" width="700" height="500"></iframe>', unsafe_allow_html=True)
