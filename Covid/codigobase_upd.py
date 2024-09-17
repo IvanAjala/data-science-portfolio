@@ -19,8 +19,7 @@ df = df.rename(columns={
     'newDeaths': 'Novos óbitos',
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
-    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
-    'state': 'Estado(s)'
+    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes'
 })
 
 # Adicionando uma linha com o total geral
@@ -30,38 +29,54 @@ df_total = df.groupby('date').agg({
     'Óbitos por 100 mil habitantes': 'mean',
     'Casos por 100 mil habitantes': 'mean'
 }).reset_index()
-df_total['Estado(s)'] = 'TOTAL'
+df_total['state'] = 'TOTAL'
 
 # Concatenando o DataFrame total com o DataFrame original
 df_combined = pd.concat([df, df_total], ignore_index=True)
 
-# Selecionando os estados disponíveis, incluindo "TOTAL"
-estados = list(df_combined['Estado(s)'].unique())
+# Navegação entre guias
+page = st.sidebar.selectbox("Escolha uma página", ["Página Inicial", "Resumo Total", "Outros Dados"])
 
-# Usando multiselect com todos os estados selecionados por padrão, incluindo "TOTAL"
-selected_states = st.sidebar.multiselect(
-    'Selecione os estado(s):',
-    options=estados,
-    default=['TOTAL']  # Define "TOTAL" como selecionado por padrão
-)
+if page == "Página Inicial":
+    st.title('DADOS COVID - BRASIL')
+    
+    # Selecionando os estados disponíveis, incluindo "TOTAL"
+    estados = list(df_combined['state'].unique())
+    selected_states = st.sidebar.multiselect(
+        'Selecione os estados:',
+        options=estados,
+        default=['TOTAL']  # Define "TOTAL" como selecionado por padrão
+    )
 
-# Selecionando colunas de interesse
-colunas = ['Novos óbitos', 'Novos casos', 'Óbitos por 100 mil habitantes', 'Casos por 100 mil habitantes']
-column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
+    # Selecionando colunas de interesse
+    colunas = ['Novos óbitos', 'Novos casos', 'Óbitos por 100 mil habitantes', 'Casos por 100 mil habitantes']
+    column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
 
-# Filtrando os dados para os estados selecionados
-df_filtered = df_combined[df_combined['Estado(s)'].isin(selected_states)]
+    # Filtrando os dados para os estados selecionados
+    df_filtered = df_combined[df_combined['state'].isin(selected_states)]
 
-# Criando o gráfico
-fig = px.line(df_filtered, x="date", y=column, color='Estado(s)', title=f'{column} por Estado')
-fig.update_layout(
-    # xaxis_title='Data', 
-    yaxis_title=column.upper(), 
-    title={'x':0.5}
-)
+    # Criando o gráfico
+    fig = px.line(df_filtered, x="date", y=column, color='state', title=f'{column} por Estado')
+    fig.update_layout(
+        xaxis_title='Data', 
+        yaxis_title=column.upper(), 
+        title={'x':0.5}
+    )
 
-# Exibindo o título e o gráfico na aplicação
-st.title('DADOS COVID - BRASIL')
-st.write('Nessa aplicação, o usuário tem a opção de escolher múltiplos estados e o tipo de informação para mostrar o gráfico. Utilize o menu lateral para alterar a mostragem.')
-st.plotly_chart(fig, use_container_width=True)
-st.caption('Os dados foram obtidos a partir do site: https://github.com/wcota/covid19br')
+    # Exibindo o gráfico
+    st.plotly_chart(fig, use_container_width=True)
+    st.caption('Os dados foram obtidos a partir do site: https://github.com/wcota/covid19br')
+
+elif page == "Resumo Total":
+    st.title('Resumo Total dos Dados')
+    
+    # Mostra gráficos ou tabelas com dados agregados
+    # Aqui você pode adicionar gráficos ou tabelas que mostram dados agregados ou outros resumos.
+    st.write("Aqui você pode exibir gráficos ou tabelas com dados totais.")
+
+elif page == "Outros Dados":
+    st.title('Outros Dados')
+    
+    # Adicione aqui qualquer outra visualização ou dados que você deseja exibir em uma guia separada.
+    st.write("Aqui você pode exibir outros tipos de dados ou visualizações.")
+
