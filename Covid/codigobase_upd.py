@@ -235,10 +235,10 @@ elif page == "Outros Dados":
     # Criando o gráfico de mapa
     fig = px.choropleth(
         df_mortes_filtered,
-        locations='estados_siglas',
+        locations='state_sigla',
         locationmode='ISO-3',  # Usando siglas dos estados brasileiros
         color='Novos óbitos',
-        hover_name='state',
+        hover_name='state_sigla',
         animation_frame='date',  # Atualiza com base na data
         color_continuous_scale=px.colors.sequential.Plasma,
         labels={'Novos óbitos': 'Total de Mortes'},
