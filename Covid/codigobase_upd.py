@@ -24,7 +24,7 @@ df = df.rename(columns={
     'suspects': 'Suspeitos',
     'tests': 'Testados',
     'vaccinated_single_per_100_inhabitants': 'Primeira dose por 100 mil habitantes',
-    'vaccinated_double_per_100_inhabitants': 'Segunda dose por 100 mil habitantes',
+    'vaccinated_second_per_100_inhabitants': 'Segunda dose por 100 mil habitantes',
     'vaccinated_third_per_100_inhabitants': 'Terceira dose por 100 mil habitantes'
 })
 
@@ -147,7 +147,7 @@ elif page == "Resumo Total":
         st.error(f"A coluna '{coluna_filtro}' não existe no DataFrame.")
 
 elif page == "Vacinação":
-    st.title('DADOS COVID - BRASIL - VACINAÇÃO / 100 MIL HAB.')
+    st.title('DADOS COVID - VACINAÇÃO')
     
     # Filtros adicionais
     estados = list(df_combined['state'].unique())
