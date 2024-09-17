@@ -205,14 +205,14 @@ elif page == "Outros Dados":
         'Minas Gerais': 'MG', 'Pará': 'PA', 'Paraíba': 'PB', 'Paraná': 'PR',
         'Pernambuco': 'PE', 'Piauí': 'PI', 'Rio de Janeiro': 'RJ', 'Rio Grande do Norte': 'RN',
         'Rio Grande do Sul': 'RS', 'Rondônia': 'RO', 'Roraima': 'RR', 'Santa Catarina': 'SC',
-        'São Paulo': 'SP', 'Sergipe': 'SE', 'Tocantins': 'TO', 'TOTAL': 'TOTAL'
+        'São Paulo': 'SP', 'Sergipe': 'SE', 'Tocantins': 'TO'
     }
 
     # Adicionar coluna com siglas dos estados
-    df_combined['estados_siglas'] = df_combined['state'].map(estados_siglas)
+    df_combined['state_sigla'] = df_combined['state'].map(estados_siglas)
     
     # Filtragem para obter o total de mortes por estado ao longo do tempo
-    df_mortes = df_combined[['date', 'estados_siglas', 'Novos óbitos']]
+    df_mortes = df_combined[['date', 'state_sigla', 'Novos óbitos']]
     
     # Filtros para seleção de estados
     estados = list(df_combined['state'].unique())
@@ -223,13 +223,14 @@ elif page == "Outros Dados":
         default=estados_sem_total  # Selecionar todos por padrão
     )
     
+    # Se "TOTAL" estiver na seleção, remove-o da lista de estados selecionados
     if 'TOTAL' in selected_states:
         selected_states.remove('TOTAL')
 
     if len(selected_states) > 0:
-        df_mortes_filtered = df_mortes[df_mortes['state'].isin(selected_states)]
+        df_mortes_filtered = df_mortes[df_mortes['state_sigla'].isin([estados_siglas[estado] for estado in selected_states])]
     else:
-        df_mortes_filtered = df_mortes[df_mortes['state'] == 'TOTAL']
+        df_mortes_filtered = df_mortes[df_mortes['state_sigla'] == estados_siglas['TOTAL']]
     
     # Criando o gráfico de mapa
     fig = px.choropleth(
