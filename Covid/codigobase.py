@@ -11,6 +11,8 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st 
 
+#streamlit run codigoBase.py
+
 #LENDO O DATASET
 df = pd.read_csv('https://raw.githubusercontent.com/wcota/covid19br/master/cases-brazil-states.csv')
 
@@ -27,13 +29,10 @@ colunas = ['Novos óbitos','Novos casos','Óbitos por 100 mil habitantes','Casos
 column = st.selectbox('Qual tipo de informação?', colunas)
 
 #SELEÇÃO DAS LINHAS QUE PERTECEM AO ESTADO 
-df_state = df[df['state'] == state]
-#df = df[df['state'] == state]
+df = df[df['state'] == state]
 
-fig = px.line(df_state, x="date", y=column, title=column + ' - ' + state)
-#fig = px.line(df, x="date", y=column, title=column + ' - ' + state)
+fig = px.line(df, x="date", y=column, title=column + ' - ' + state)
 fig.update_layout( xaxis_title='Data', yaxis_title=column.upper(), title = {'x':0.5})
-# fig = px.line(df_state, x='date', y=['Novos óbitos', 'Novos casos'])
 
 st.title('DADOS COVID - BRASIL')
 st.write('Nessa aplicação, o usuário tem a opção de escolher o estado e o tipo de informação para mostrar o gráfico. Utilize o menu lateral para alterar a mostragem.')
