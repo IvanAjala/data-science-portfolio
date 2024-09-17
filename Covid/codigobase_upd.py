@@ -19,9 +19,9 @@ df = df.rename(columns={
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
     'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
-    'recovered': 'Recuperados',
-    'suspects': 'Suspeitos',
-    'tests': 'Testados'
+    'totalRecovered': 'Recuperados',
+    'totalSuspects': 'Suspeitos',
+    'totalTests': 'Testados'
 })
 
 # Adicionando uma linha com o total geral
@@ -45,14 +45,21 @@ page = st.sidebar.selectbox("Escolha uma página", ["Página Inicial", "Resumo T
 if page == "Página Inicial":
     st.title('DADOS COVID - BRASIL')
     
-    # Selecionando os estados disponíveis, incluindo "TOTAL"
+    # Selecionando os estados disponíveis
     estados = list(df_combined['state'].unique())
+    
+    # Se "TOTAL" estiver selecionado como padrão, deve estar disponível inicialmente
+    estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
     selected_states = st.sidebar.multiselect(
         'Selecione os estados:',
-        options=estados,
+        options=estados_sem_total,
         default=['TOTAL']  # Define "TOTAL" como selecionado por padrão
     )
-
+    
+    # Se o usuário selecionar outros estados, "TOTAL" não deve ser selecionado
+    if 'TOTAL' in selected_states:
+        selected_states.append('TOTAL')  # Adiciona "TOTAL" de volta à seleção
+    
     # Selecionando colunas de interesse
     colunas = ['Novos óbitos', 'Novos casos', 'Óbitos por 100 mil habitantes', 'Casos por 100 mil habitantes']
     column = st.sidebar.selectbox('Qual tipo de informação?', colunas)
@@ -84,11 +91,18 @@ elif page == "Resumo Total":
     
     # Filtros adicionais
     estados = list(df_combined['state'].unique())
+    
+    # Se "TOTAL" estiver selecionado como padrão, deve estar disponível inicialmente
+    estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
     selected_states = st.sidebar.multiselect(
         'Selecione os estados:',
-        options=estados,
+        options=estados_sem_total,
         default=['TOTAL']  # Define "TOTAL" como selecionado por padrão
     )
+    
+    # Se o usuário selecionar outros estados, "TOTAL" não deve ser selecionado
+    if 'TOTAL' in selected_states:
+        selected_states.append('TOTAL')  # Adiciona "TOTAL" de volta à seleção
 
     # Novo filtro
     filtro = st.sidebar.selectbox(
