@@ -19,7 +19,7 @@ df = df.rename(columns={
     'newDeaths': 'Novos óbitos',
     'newCases': 'Novos casos',
     'deaths_per_100k_inhabitants': 'Óbitos por 100 mil habitantes',
-    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes'
+    'totalCases_per_100k_inhabitants': 'Casos por 100 mil habitantes',
     'state': 'Estado(s)'
 })
 
