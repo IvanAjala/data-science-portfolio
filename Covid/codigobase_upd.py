@@ -209,10 +209,10 @@ elif page == "Outros Dados":
     }
 
     # Adicionar coluna com siglas dos estados
-    df_combined['state_sigla'] = df_combined['state'].map(estados_siglas)
+    df_combined['estados_siglas'] = df_combined['state'].map(estados_siglas)
     
     # Filtragem para obter o total de mortes por estado ao longo do tempo
-    df_mortes = df_combined[['date', 'state_sigla', 'Novos óbitos']]
+    df_mortes = df_combined[['date', 'estados_siglas', 'Novos óbitos']]
     
     # Filtros para seleção de estados
     estados = list(df_combined['state'].unique())
@@ -234,7 +234,7 @@ elif page == "Outros Dados":
     # Criando o gráfico de mapa
     fig = px.choropleth(
         df_mortes_filtered,
-        locations='state_sigla',
+        locations='estados_siglas',
         locationmode='ISO-3',  # Usando siglas dos estados brasileiros
         color='Novos óbitos',
         hover_name='state',
