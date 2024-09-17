@@ -23,6 +23,9 @@ df = df.rename(columns={
     'recovered': 'Recuperados',
     'suspects': 'Suspeitos',
     'tests': 'Testados'
+    'vaccinated_single_per_100_inhabitants': '1. Dose por 100 mil habitantes',
+    'vaccinated_second_per_100_inhabitants': '2. Dose por 100 mil habitantes,
+    'vaccinated_third_per_100_inhabitants': '3. Dose por 100 mil habitantes'
 })
 
 # Adicionando uma linha com o total geral
@@ -117,6 +120,58 @@ elif page == "Resumo Total":
     filtro = st.sidebar.selectbox(
         'Selecione o tipo de dado:',
         ['Recuperados', 'Suspeitos', 'Testados']
+    )
+
+    # Filtrando os dados para os estados selecionados e o filtro
+    coluna_filtro = filtro
+    if coluna_filtro in df.columns:
+        df_filtered = df_combined[df_combined['state'].isin(selected_states)]
+
+        # Verificar se é necessário agregar dados para o estado "TOTAL"
+        if 'TOTAL' in selected_states:
+            # Se 'TOTAL' estiver incluído, agregue os dados e renomeie 'state' para 'TOTAL'
+            df_filtered = df_filtered[['date', 'state', coluna_filtro]].groupby(['date']).sum().reset_index()
+            df_filtered['state'] = 'TOTAL'
+
+        # Criando o gráfico
+        fig = px.line(df_filtered, x="date", y=coluna_filtro, color='state', title=f'{filtro} por Estado')
+        fig.update_layout(
+            xaxis_title='Data',
+            yaxis_title=coluna_filtro,
+            title={'x':0.5}
+        )
+
+        # Exibindo o gráfico
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.error(f"A coluna '{coluna_filtro}' não existe no DataFrame.")
+
+elif page == "Vacinação":
+    st.title('DADOS COVID - BRASIL - VACINAÇÃO / 100 MIL HAB.')
+    
+    # Filtros adicionais
+    estados = list(df_combined['state'].unique())
+    
+    # Garantir que "TOTAL" esteja na lista de opções
+    estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
+    
+    # Permitir seleção de múltiplos estados
+    selected_states = st.sidebar.multiselect(
+        'Selecione os estados:',
+        options=estados_sem_total,
+        default=[]
+    )
+
+    # Se "TOTAL" estiver na seleção, adiciona-o à lista de seleção
+    if len(selected_states) == 0:
+        selected_states = ['TOTAL']
+    elif 'TOTAL' in selected_states and len(selected_states) > 1:
+        selected_states.remove('TOTAL')
+
+    # Novo filtro
+    filtro = st.sidebar.selectbox(
+        'Selecione o tipo de dado:',
+        ['1. Dose por 100 mil habitante', '2. Dose por 100 mil habitante', '3. Dose por 100 mil habitante']
     )
 
     # Filtrando os dados para os estados selecionados e o filtro
