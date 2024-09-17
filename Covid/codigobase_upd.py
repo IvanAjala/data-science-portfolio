@@ -197,10 +197,24 @@ elif page == "Vacinação":
 elif page == "Outros Dados":
     st.title('Outros Dados')
 
-    # Filtragem para obter o total de mortes por estado ao longo do tempo
-    df_mortes = df_combined[['date', 'state', 'Novos óbitos']]
+    # Mapeamento das siglas dos estados brasileiros
+    estados_siglas = {
+        'Acre': 'AC', 'Alagoas': 'AL', 'Amapá': 'AP', 'Amazonas': 'AM',
+        'Bahia': 'BA', 'Ceará': 'CE', 'Distrito Federal': 'DF', 'Espírito Santo': 'ES',
+        'Goiás': 'GO', 'Maranhão': 'MA', 'Mato Grosso': 'MT', 'Mato Grosso do Sul': 'MS',
+        'Minas Gerais': 'MG', 'Pará': 'PA', 'Paraíba': 'PB', 'Paraná': 'PR',
+        'Pernambuco': 'PE', 'Piauí': 'PI', 'Rio de Janeiro': 'RJ', 'Rio Grande do Norte': 'RN',
+        'Rio Grande do Sul': 'RS', 'Rondônia': 'RO', 'Roraima': 'RR', 'Santa Catarina': 'SC',
+        'São Paulo': 'SP', 'Sergipe': 'SE', 'Tocantins': 'TO', 'TOTAL': 'TOTAL'
+    }
+
+    # Adicionar coluna com siglas dos estados
+    df_combined['state_sigla'] = df_combined['state'].map(estados_siglas)
     
-    # Filtrando dados para os estados selecionados
+    # Filtragem para obter o total de mortes por estado ao longo do tempo
+    df_mortes = df_combined[['date', 'state_sigla', 'Novos óbitos']]
+    
+    # Filtros para seleção de estados
     estados = list(df_combined['state'].unique())
     estados_sem_total = [estado for estado in estados if estado != 'TOTAL']
     selected_states = st.sidebar.multiselect(
@@ -220,8 +234,8 @@ elif page == "Outros Dados":
     # Criando o gráfico de mapa
     fig = px.choropleth(
         df_mortes_filtered,
-        locations='state',
-        locationmode='country names',  # Ajuste se necessário para estados brasileiros
+        locations='state_sigla',
+        locationmode='ISO-3',  # Usando siglas dos estados brasileiros
         color='Novos óbitos',
         hover_name='state',
         animation_frame='date',  # Atualiza com base na data
@@ -232,6 +246,3 @@ elif page == "Outros Dados":
 
     # Exibindo o gráfico no Streamlit
     st.plotly_chart(fig, use_container_width=True)
-
-
-
